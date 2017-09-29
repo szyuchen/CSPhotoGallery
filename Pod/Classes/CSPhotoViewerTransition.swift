@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 class CSPhotoViewerTransition: NSObject, UIViewControllerTransitioningDelegate {
     var initialRect = CGRect.zero
@@ -49,6 +50,7 @@ class CSPhotoViewerPresentAnimation: NSObject, UIViewControllerAnimatedTransitio
         containerView.addSubview(imageView)
         
         toViewController.view.alpha = 0
+        toViewController.view.layoutIfNeeded()
         containerView.addSubview(toViewController.view)
         
         let frame = getImageScaleFactor(originImage: originalImage, standardFrame: toViewController.collectionView.frame)
@@ -111,19 +113,6 @@ fileprivate extension UIViewControllerAnimatedTransitioning {
     func getImageScaleFactor(originImage: UIImage, standardFrame: CGRect) -> CGRect {
         let imageWidth = CGFloat(originImage.cgImage!.width)
         let imageHeight = CGFloat(originImage.cgImage!.height)
-        var scaleFactor: CGFloat = 1
-        
-        if imageWidth >= imageHeight {
-            scaleFactor = standardFrame.width / imageWidth
-        } else {
-            scaleFactor = standardFrame.height / imageHeight
-        }
-        
-        let width = imageWidth * scaleFactor
-        let height = imageHeight * scaleFactor
-        let x = (standardFrame.width - width) / 2
-        let y = (standardFrame.height - height) / 2 + standardFrame.origin.y
-        
-        return CGRect(origin: CGPoint(x: x, y: y), size: CGSize(width: width, height: height))
+        return AVMakeRect( aspectRatio: CGSize(width: imageWidth,height: imageHeight), insideRect: standardFrame)
     }
 }

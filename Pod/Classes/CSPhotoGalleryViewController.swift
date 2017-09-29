@@ -58,8 +58,7 @@ public class CSPhotoGalleryViewController: UIViewController {
     public var mediaType: CSPhotoImageType = .image
     public var CHECK_MAX_COUNT = 20
     public var horizontalCount: CGFloat = 3
-    
-    fileprivate var assetCollectionViewController = CSPhotoGalleryAssetCollectionViewController.instance
+
     fileprivate var thumbnailSize: CGSize = CGSize.zero
     fileprivate var CSObservationContext = CSObservation()
     fileprivate var CSCollectionObservationContext = CSObservation()
@@ -67,6 +66,14 @@ public class CSPhotoGalleryViewController: UIViewController {
     
     var checkImage: UIImage?
     var unCheckImage: UIImage?
+    
+    override  public func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+            super.viewWillTransition(to: size, with: coordinator)
+            guard let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else {
+                return
+            }
+            flowLayout.invalidateLayout()
+        }
     
     override public func viewDidLoad() {
         super.viewDidLoad()
@@ -99,10 +106,10 @@ public class CSPhotoGalleryViewController: UIViewController {
 //  MARK:- Gesture
 extension CSPhotoGalleryViewController {
     func collectionNameTap(_ sender: UITapGestureRecognizer) {
-        assetCollectionViewController.isHidden = !assetCollectionViewController.isHidden
-        collectionNameArrow.text = assetCollectionViewController.isHidden ? "▼" : "▲"
+        let a = CSPhotoGalleryAssetCollectionViewController.instance
+        present(a, animated: true, completion: nil)
+        collectionNameArrow.text =  "▼"
     }
-    
     func reloadCollectionView() {
         DispatchQueue.main.async {
             self.collectionView.reloadData()
@@ -151,6 +158,10 @@ extension CSPhotoGalleryViewController {
 //  MARK:- Actions
 private extension CSPhotoGalleryViewController {
     @IBAction func backBtnAction(_ sender: Any) {
+        if let custom = CSPhotoDesignManager.instance.customDismiss {
+            custom()
+            return
+        }
         dismiss()
     }
     
@@ -181,7 +192,6 @@ fileprivate extension CSPhotoGalleryViewController {
     }
     
     func setView() {
-        addAssetCollectionView()
         addObserver()
         setTitle()
         
@@ -194,16 +204,6 @@ fileprivate extension CSPhotoGalleryViewController {
         
         checkImage = CSPhotoDesignManager.instance.photoGalleryCheckImage ?? originalCheckImage
         unCheckImage = CSPhotoDesignManager.instance.photoGalleryUnCheckImage ?? originalUnCheckImage
-    }
-    
-    func addAssetCollectionView() {
-        assetCollectionViewController.view.frame = collectionView.frame
-        assetCollectionViewController.viewHeight = collectionView.bounds.height
-        assetCollectionViewController.view.frame.size.height = 0
-        
-        addChildViewController(assetCollectionViewController)
-        view.addSubview(assetCollectionViewController.view)
-        assetCollectionViewController.didMove(toParentViewController: self)
     }
     
     func addObserver() {
