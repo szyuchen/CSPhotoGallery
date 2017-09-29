@@ -193,7 +193,6 @@ fileprivate extension CSPhotoGalleryViewController {
     }
     
     func setView() {
-//        addAssetCollectionView()
         addObserver()
         setTitle()
         
