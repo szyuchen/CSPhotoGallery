@@ -1,5 +1,5 @@
 PODS:
-  - CSPhotoGallery (0.1.0)
+  - CSPhotoGallery (0.3.0)
 
 DEPENDENCIES:
   - CSPhotoGallery (from `../`)
@@ -9,8 +9,8 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  CSPhotoGallery: 12c75ae554d979c6081b1c194563a13d6143bb85
+  CSPhotoGallery: 744d5495762c7453e2d76ac518c3c5f29223a610
 
-PODFILE CHECKSUM: 866b6be9e6df9c3c4a9dbcb7248d1f81e92e130f
+PODFILE CHECKSUM: 595417dcb19213eb7b270d5cd79c46068bf45be1
 
-COCOAPODS: 1.1.1
+COCOAPODS: 1.3.1

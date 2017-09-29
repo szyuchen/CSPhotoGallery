@@ -15,6 +15,8 @@ public class CSPhotoDesignManager {
     //  Photo collection view
     public var photoGalleryBackButtonImage: UIImage?
     
+    public var customDismiss: (()->())?
+    
     //  Photo detail view
     public var photoDetailBackButtonImage: UIImage?
     
@@ -29,4 +31,5 @@ public class CSPhotoDesignManager {
     
     //  When OK Button is hidden, CheckCountLabel and CheckBtn is hidden  
     public var isOKButtonHidden = false
+    
 }

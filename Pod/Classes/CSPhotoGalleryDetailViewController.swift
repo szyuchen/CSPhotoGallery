@@ -16,7 +16,6 @@ class CSPhotoGalleryDetailViewController: UIViewController {
         let storyBoard = UIStoryboard.init(name: "CSPhotoGallery", bundle: bundle)
         return storyBoard.instantiateViewController(withIdentifier: identifier) as! CSPhotoGalleryDetailViewController
     }
-
     @IBOutlet fileprivate weak var currentIndexLabel: UILabel? {
         didSet {
             updateCurrentIndexLabel()
@@ -68,6 +67,8 @@ class CSPhotoGalleryDetailViewController: UIViewController {
             if PhotoManager.sharedInstance.assetsCount > 0 {
                 updateCurrentIndexLabel()
                 updateCheckBtnUI()
+                let asset = PhotoManager.sharedInstance.getCurrentCollectionAsset(at: currentIndexPath)
+                delegate?.CSPhotoGallerySelectedImageDidChange(asset:asset)
             }
         }
     }
@@ -115,6 +116,7 @@ fileprivate extension CSPhotoGalleryDetailViewController {
     fileprivate func setViewController() {
         setData()
         setView()
+        self.collectionView.layoutIfNeeded()
     }
     
     private func setData() {
@@ -166,9 +168,19 @@ fileprivate extension CSPhotoGalleryDetailViewController {
     
     func scrollToCurrentIndexPath() {
         DispatchQueue.main.async {
-            self.collectionView.scrollToItem(at: self.currentIndexPath, at: .left, animated: false)
+            self.collectionView.scrollToItem(at: self.currentIndexPath, at: .centeredHorizontally, animated: false)
         }
     }
+    
+    override internal func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        guard let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else {
+            return
+        }
+        flowLayout.invalidateLayout()
+        self.scrollToCurrentIndexPath()
+    }
+    
 }
 
 //  MARK:- Extension
@@ -226,13 +238,11 @@ extension CSPhotoGalleryDetailViewController: UICollectionViewDataSource {
 
 //  MARK:- UICollectionView Delegate
 extension CSPhotoGalleryDetailViewController: UICollectionViewDelegateFlowLayout {
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         if scrollView == collectionView {
             var visibleRect = CGRect()
-            
             visibleRect.origin = collectionView.contentOffset
             visibleRect.size = collectionView.bounds.size
-            
             let visiblePoint = CGPoint(x: visibleRect.midX, y: visibleRect.midY)
             if let visibleIndexPath: IndexPath = collectionView.indexPathForItem(at: visiblePoint) {
                 if currentIndexPath != visibleIndexPath {
