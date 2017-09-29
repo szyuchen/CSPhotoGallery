@@ -73,8 +73,12 @@ extension CSPhotoGalleryAssetCollectionViewController {
     private func showView(height: CGFloat) {
         UIView.animate(withDuration: 0.2) {
             self.view.frame.size.height = height
+            self.tableView.reloadData()
             self.view.layoutIfNeeded()
         }
+    }
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
     }
 }
 
