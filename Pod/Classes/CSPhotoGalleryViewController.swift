@@ -107,10 +107,9 @@ public class CSPhotoGalleryViewController: UIViewController {
 extension CSPhotoGalleryViewController {
     func collectionNameTap(_ sender: UITapGestureRecognizer) {
         let a = CSPhotoGalleryAssetCollectionViewController.instance
-        show(a, sender: nil)
+        present(a, animated: true, completion: nil)
         collectionNameArrow.text =  "▼"
     }
-    
     func reloadCollectionView() {
         DispatchQueue.main.async {
             self.collectionView.reloadData()

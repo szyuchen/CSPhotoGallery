@@ -24,12 +24,6 @@ class CSPhotoGalleryAssetCollectionViewController: UIViewController {
         }
     }
     
-    var isHidden: Bool = true {
-        didSet {
-            isHidden ? disappear() : appear()
-        }
-    }
-    
     var viewHeight: CGFloat = 0
     
     override func viewDidLoad() {
@@ -138,7 +132,7 @@ extension CSPhotoGalleryAssetCollectionViewController: UITableViewDelegate {
         }
         
         PhotoManager.sharedInstance.currentCollection = collection
-        isHidden = !isHidden
+        presentingViewController?.dismiss(animated: true, completion: nil)
     }
 }
 
@@ -151,3 +145,4 @@ extension CSPhotoGalleryAssetCollectionViewController: PHPhotoLibraryChangeObser
         }
     }
 }
+
