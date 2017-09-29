@@ -37,6 +37,10 @@ class ViewController: UIViewController {
 }
 
 extension ViewController: CSPhotoGalleryDelegate {
+    func CSPhotoGallerySelectedImageDidChange(asset: PHAsset) {
+        
+    }
+    
     func getAssets(assets: [PHAsset]) {
         assets.forEach {
             let size = CGSize(width: $0.pixelWidth, height: $0.pixelHeight)
