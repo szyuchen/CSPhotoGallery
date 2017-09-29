@@ -178,6 +178,9 @@ public extension PhotoManager {
             }
         }
     }
+    func assetToFullResImage(asset: PHAsset, completionHandler:((UIImage)->())?){
+        PhotoManager.sharedInstance.assetToImage(asset: asset, imageSize: PHImageManagerMaximumSize, completionHandler: completionHandler)
+    }
 }
 
 //  MARK:- PHAssetCollection
