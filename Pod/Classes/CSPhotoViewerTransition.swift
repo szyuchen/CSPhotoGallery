@@ -12,6 +12,7 @@ import AVFoundation
 class CSPhotoViewerTransition: NSObject, UIViewControllerTransitioningDelegate {
     var initialRect = CGRect.zero
     var originalImage = UIImage()
+    weak var originalViewController:CSPhotoGalleryViewController?
     
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         let presentAnimation = CSPhotoViewerPresentAnimation(initialRect: initialRect, originalImage: originalImage)
@@ -20,6 +21,7 @@ class CSPhotoViewerTransition: NSObject, UIViewControllerTransitioningDelegate {
     
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         let dismissAnimation = CSPhotoViewerDismissAnimation()
+        dismissAnimation.originalViewController = originalViewController
         return dismissAnimation
     }
 }
@@ -68,6 +70,7 @@ class CSPhotoViewerPresentAnimation: NSObject, UIViewControllerAnimatedTransitio
 }
 
 class CSPhotoViewerDismissAnimation: NSObject, UIViewControllerAnimatedTransitioning {
+    weak var originalViewController:CSPhotoGalleryViewController?
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return 0.3
     }
@@ -75,7 +78,10 @@ class CSPhotoViewerDismissAnimation: NSObject, UIViewControllerAnimatedTransitio
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         var toViewController: CSPhotoGalleryViewController?
         
-        if let vc = transitionContext.viewController(forKey: .to) as? CSPhotoGalleryViewController {
+        if let o = originalViewController {
+            toViewController = o
+        }
+        else if let vc = transitionContext.viewController(forKey: .to) as? CSPhotoGalleryViewController {
             toViewController = vc
         } else if let nvc = transitionContext.viewController(forKey: .to) as? UINavigationController {
             guard let vc = nvc.topViewController as? CSPhotoGalleryViewController else { return }

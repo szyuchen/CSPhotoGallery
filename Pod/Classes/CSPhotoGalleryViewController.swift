@@ -306,6 +306,7 @@ extension CSPhotoGalleryViewController: UICollectionViewDelegate, UICollectionVi
                 frame.origin.y = frame.origin.y - collectionView.contentOffset.y + collectionView.frame.origin.y
                 self.transitionDelegate.initialRect = frame
                 self.transitionDelegate.originalImage = image
+                self.transitionDelegate.originalViewController = self
                 
                 vc.delegate = self.delegate
                 vc.currentIndexPath = indexPath

@@ -167,8 +167,8 @@ extension PhotoManager {
 }
 
 public extension PhotoManager {
-    func assetToImage(asset: PHAsset, imageSize: CGSize, isCliping: Bool = false, completionHandler: ((UIImage)->())?) {
-        imageManager.requestImage(for: asset, targetSize: imageSize, contentMode: .aspectFill, options: imageRequestOptions) { image, _ in
+    func assetToImage(asset: PHAsset, imageSize: CGSize, isCliping: Bool = false, contentMode:PHImageContentMode = .aspectFit,completionHandler: ((UIImage)->())?) {
+        imageManager.requestImage(for: asset, targetSize: imageSize, contentMode: contentMode, options: imageRequestOptions) { image, _ in
             if let thumbnameImage = image {
                 if isCliping {
                     completionHandler?(thumbnameImage.clipRect)
