@@ -87,6 +87,12 @@ class CSPhotoGalleryDetailViewController: UIViewController {
     override var preferredStatusBarStyle : UIStatusBarStyle {
         return UIStatusBarStyle.lightContent
     }
+    
+    override func viewDidLayoutSubviews(){
+        super.viewDidLayoutSubviews()
+        collectionView.scrollToItem(at: currentIndexPath, at: .centeredHorizontally, animated: false)
+    }
+    
 }
 
 //  IBAction
@@ -168,8 +174,9 @@ fileprivate extension CSPhotoGalleryDetailViewController {
     
     func scrollToCurrentIndexPath() {
         DispatchQueue.main.async {
-            self.collectionView.scrollToItem(at: self.currentIndexPath, at: .centeredHorizontally, animated: false)
+            self.collectionView.scrollToItem(at: self.currentIndexPath, at: .left, animated: false)
         }
+
     }
     
     override internal func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
