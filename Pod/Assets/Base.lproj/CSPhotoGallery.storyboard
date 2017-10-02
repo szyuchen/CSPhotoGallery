@@ -13,7 +13,7 @@
         <!--CSPhotoGalleryViewController-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController storyboardIdentifier="CSPhotoGalleryViewController" title="CSPhotoGalleryViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BYZ-38-t0r" customClass="CSPhotoGalleryViewController" customModule="CSPhotoGallery" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="CSPhotoGalleryViewController" title="CSPhotoGalleryViewController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BYZ-38-t0r" customClass="CSPhotoGalleryViewController" customModule="CSPhotoGallery" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -214,6 +214,7 @@
                             <constraint firstItem="Aj0-cd-hX8" firstAttribute="top" secondItem="IKN-qu-6qD" secondAttribute="bottom" id="zLI-RJ-qrS"/>
                         </constraints>
                     </view>
+                    <extendedEdge key="edgesForExtendedLayout"/>
                     <navigationItem key="navigationItem" id="rWf-wM-eIZ"/>
                     <connections>
                         <outlet property="backBtn" destination="JU9-jg-DbI" id="cxE-WL-PlC"/>
@@ -231,7 +232,7 @@
         <!--CSPhotoGalleryDetailViewController-->
         <scene sceneID="1Li-6w-dzT">
             <objects>
-                <viewController storyboardIdentifier="CSPhotoGalleryDetailViewController" title="CSPhotoGalleryDetailViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="7hl-YS-b0Z" customClass="CSPhotoGalleryDetailViewController" customModule="CSPhotoGallery" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="CSPhotoGalleryDetailViewController" title="CSPhotoGalleryDetailViewController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="7hl-YS-b0Z" customClass="CSPhotoGalleryDetailViewController" customModule="CSPhotoGallery" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="LIu-NN-wh2"/>
                         <viewControllerLayoutGuide type="bottom" id="gJq-JS-HQK"/>
@@ -382,6 +383,7 @@
                             <constraint firstItem="jxx-Dp-wfE" firstAttribute="leading" secondItem="wAu-Ib-s6x" secondAttribute="trailing" constant="5" id="xfL-Ep-ai4"/>
                         </constraints>
                     </view>
+                    <extendedEdge key="edgesForExtendedLayout"/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
                     <connections>
                         <outlet property="backBtn" destination="PFw-iY-HLf" id="oTp-t9-MKu"/>

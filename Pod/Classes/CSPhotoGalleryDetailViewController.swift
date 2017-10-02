@@ -9,6 +9,8 @@
 import UIKit
 
 class CSPhotoGalleryDetailViewController: UIViewController {
+    var scrollViewState: UIGestureRecognizerState = .possible
+    
     static var instance: CSPhotoGalleryDetailViewController {
         let podBundle = Bundle(for: CSPhotoGalleryViewController.self)
         let bundleURL = podBundle.url(forResource: "CSPhotoGallery", withExtension: "bundle")
@@ -87,6 +89,14 @@ class CSPhotoGalleryDetailViewController: UIViewController {
     override var preferredStatusBarStyle : UIStatusBarStyle {
         return UIStatusBarStyle.lightContent
     }
+    
+    override func viewDidLayoutSubviews(){
+        guard scrollViewState != .changed else{
+            return
+        }
+        collectionView.scrollToItem(at: currentIndexPath, at: .left, animated: false)
+    }
+    
 }
 
 //  IBAction
@@ -124,7 +134,7 @@ fileprivate extension CSPhotoGalleryDetailViewController {
     }
     
     private func setView() {
-        scrollToCurrentIndexPath()
+//        scrollToCurrentIndexPath()
         
         let podBundle = Bundle(for: CSPhotoGalleryDetailViewController.self)
         let bundleURL = podBundle.url(forResource: "CSPhotoGallery", withExtension: "bundle")
@@ -168,8 +178,9 @@ fileprivate extension CSPhotoGalleryDetailViewController {
     
     func scrollToCurrentIndexPath() {
         DispatchQueue.main.async {
-            self.collectionView.scrollToItem(at: self.currentIndexPath, at: .centeredHorizontally, animated: false)
+            self.collectionView.scrollToItem(at: self.currentIndexPath, at: .left, animated: false)
         }
+
     }
     
     override internal func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -264,4 +275,10 @@ extension CSPhotoGalleryDetailViewController: UIScrollViewDelegate {
 //        let cell = collectionView.cellForItem(at: currentIndexPath) as? CSPhotoGalleryDetailCollectionViewCell
 //        return cell?.imageView
 //    }
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard scrollView == collectionView else {
+            return
+        }
+        scrollViewState = scrollView.panGestureRecognizer.state
+    }
 }
