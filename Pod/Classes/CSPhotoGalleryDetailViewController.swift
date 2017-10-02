@@ -10,7 +10,9 @@ import UIKit
 import Photos
 
 class CSPhotoGalleryDetailViewController: UIViewController {
-    var scrollViewState: UIGestureRecognizerState = .possible
+//    var scrollViewState: UIGestureRecognizerState = .possible
+    var dragging:Bool = false
+    
     
     @IBOutlet weak var progressView: UIProgressView!
     static var instance: CSPhotoGalleryDetailViewController {
@@ -91,7 +93,10 @@ class CSPhotoGalleryDetailViewController: UIViewController {
     }
     
     override func viewDidLayoutSubviews(){
-        guard scrollViewState != .changed else{
+//        guard scrollViewState != .changed else{
+//            return
+//        }
+        guard dragging == false else{
             return
         }
         collectionView.scrollToItem(at: currentIndexPath, at: .left, animated: false)
@@ -286,6 +291,15 @@ extension CSPhotoGalleryDetailViewController: UIScrollViewDelegate {
         guard scrollView == collectionView else {
             return
         }
-        scrollViewState = scrollView.panGestureRecognizer.state
+//        scrollViewState = scrollView.panGestureRecognizer.state
+    }
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        dragging = true
+    }
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        guard decelerate == false else {
+            return
+        }
+        dragging = false
     }
 }
