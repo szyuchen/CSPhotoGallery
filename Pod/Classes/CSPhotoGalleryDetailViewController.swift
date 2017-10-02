@@ -9,6 +9,8 @@
 import UIKit
 
 class CSPhotoGalleryDetailViewController: UIViewController {
+    var scrollViewState: UIGestureRecognizerState = .possible
+    
     static var instance: CSPhotoGalleryDetailViewController {
         let podBundle = Bundle(for: CSPhotoGalleryViewController.self)
         let bundleURL = podBundle.url(forResource: "CSPhotoGallery", withExtension: "bundle")
@@ -89,8 +91,10 @@ class CSPhotoGalleryDetailViewController: UIViewController {
     }
     
     override func viewDidLayoutSubviews(){
-        super.viewDidLayoutSubviews()
-        collectionView.scrollToItem(at: currentIndexPath, at: .centeredHorizontally, animated: false)
+        guard scrollViewState != .changed else{
+            return
+        }
+        collectionView.scrollToItem(at: currentIndexPath, at: .left, animated: false)
     }
     
 }
@@ -130,7 +134,7 @@ fileprivate extension CSPhotoGalleryDetailViewController {
     }
     
     private func setView() {
-        scrollToCurrentIndexPath()
+//        scrollToCurrentIndexPath()
         
         let podBundle = Bundle(for: CSPhotoGalleryDetailViewController.self)
         let bundleURL = podBundle.url(forResource: "CSPhotoGallery", withExtension: "bundle")
@@ -271,4 +275,10 @@ extension CSPhotoGalleryDetailViewController: UIScrollViewDelegate {
 //        let cell = collectionView.cellForItem(at: currentIndexPath) as? CSPhotoGalleryDetailCollectionViewCell
 //        return cell?.imageView
 //    }
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard scrollView == collectionView else {
+            return
+        }
+        scrollViewState = scrollView.panGestureRecognizer.state
+    }
 }
