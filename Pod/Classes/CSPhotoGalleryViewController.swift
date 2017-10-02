@@ -192,11 +192,16 @@ fileprivate extension CSPhotoGalleryViewController {
         PhotoManager.sharedInstance.initPhotoManager()
     }
     
-    func setThumbnailSize() {
+    func setThumbnailSize(_ newSize:CGSize?=nil) {
         let scale = UIScreen.main.scale
-        let cellSize = (collectionView.collectionViewLayout as! UICollectionViewFlowLayout).itemSize
-        let size = min(cellSize.width, cellSize.height) * scale
-        thumbnailSize = CGSize(width: size, height: size)
+        if newSize != nil {
+            thumbnailSize = CGSize(width: newSize!.width*scale, height: newSize!.height*scale)
+        }else{
+            let cellSize = (collectionView.collectionViewLayout as! UICollectionViewFlowLayout).itemSize
+            let size = min(cellSize.width, cellSize.height) * scale
+            thumbnailSize = CGSize(width: size, height: size)
+        }
+        
     }
     
     func setView() {
@@ -357,6 +362,7 @@ extension CSPhotoGalleryViewController: UICollectionViewDelegate, UICollectionVi
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let size = (collectionView.bounds.width - horizontalCount - 1) / horizontalCount
+        setThumbnailSize(CGSize(width: size, height: size))
         return CGSize(width: size, height: size)
     }
 }
