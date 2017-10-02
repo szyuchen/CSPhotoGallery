@@ -23,6 +23,8 @@ public class CSPhotoDesignManager {
     //  OK Button Title
     public var photoGalleryOKButtonTitle: String?
     
+    public var photoGalleryOKButtonImage: UIImage?
+    
     //  Check Image
     public var photoGalleryCheckImage: UIImage?
     
@@ -31,5 +33,9 @@ public class CSPhotoDesignManager {
     
     //  When OK Button is hidden, CheckCountLabel and CheckBtn is hidden  
     public var isOKButtonHidden = false
+    
+    public var customOKButtonAction:(()->())?
+    
+    public var isCountLabelHidden = false
     
 }

@@ -105,6 +105,7 @@ extension PhotoManager {
         imageRequestOptions.resizeMode = .exact
         imageRequestOptions.deliveryMode = .highQualityFormat
         imageRequestOptions.isSynchronous = false
+        imageRequestOptions.isNetworkAccessAllowed = true
     }
 }
 
@@ -139,9 +140,9 @@ extension PhotoManager {
     }
     
     //  Set ThumbnailImage
-    func setThumbnailImage(at indexPath: IndexPath, thumbnailSize: CGSize, isCliping: Bool, completionHandler: ((UIImage)->())?) {
+    func setThumbnailImage(at indexPath: IndexPath, thumbnailSize: CGSize, isCliping: Bool,progress:PHAssetImageProgressHandler? = nil, completionHandler: ((UIImage)->())?) {
         let asset = getCurrentCollectionAsset(at: indexPath)
-        assetToImage(asset: asset, imageSize: thumbnailSize, isCliping: isCliping,completionHandler: completionHandler)
+        assetToImage(asset: asset, imageSize: thumbnailSize, isCliping: isCliping,contentMode: .aspectFit, progressHandler: progress,  completionHandler: completionHandler)
     }
     
     //  Check selected IndexPath
@@ -167,8 +168,15 @@ extension PhotoManager {
 }
 
 public extension PhotoManager {
-    func assetToImage(asset: PHAsset, imageSize: CGSize, isCliping: Bool = false, contentMode:PHImageContentMode = .aspectFit,completionHandler: ((UIImage)->())?) {
-        imageManager.requestImage(for: asset, targetSize: imageSize, contentMode: contentMode, options: imageRequestOptions) { image, _ in
+    func assetToImage(asset: PHAsset,
+                      imageSize: CGSize,
+                      isCliping: Bool = false,
+                      contentMode:PHImageContentMode = .aspectFit,
+                      progressHandler: Photos.PHAssetImageProgressHandler? = nil,
+                      completionHandler: ((UIImage)->())? = nil) {
+        
+        imageRequestOptions.progressHandler = progressHandler
+        imageManager.requestImage(for: asset, targetSize: imageSize, contentMode: contentMode, options: imageRequestOptions) { image, __ in
             if let thumbnameImage = image {
                 if isCliping {
                     completionHandler?(thumbnameImage.clipRect)
@@ -176,6 +184,7 @@ public extension PhotoManager {
                     completionHandler?(thumbnameImage)
                 }
             }
+            self.imageRequestOptions.progressHandler = nil
         }
     }
     func assetToFullResImage(asset: PHAsset, completionHandler:((UIImage)->())?){
