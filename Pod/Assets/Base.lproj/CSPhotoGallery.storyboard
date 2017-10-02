@@ -43,7 +43,7 @@
                                             <action selector="backBtnAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="go9-bM-ocC"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IJe-xQ-ESv">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IJe-xQ-ESv">
                                         <rect key="frame" x="325" y="0.5" width="45" height="45"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="45" id="1sh-AL-CTg"/>
@@ -74,6 +74,10 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <progressView hidden="YES" opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="tRT-LF-bRV">
+                                        <rect key="frame" x="0.0" y="40" width="375" height="2"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </progressView>
                                 </subviews>
                                 <color key="backgroundColor" red="0.97254901960784312" green="0.97254901960784312" blue="0.97254901960784312" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -223,6 +227,7 @@
                         <outlet property="collectionNameArrow" destination="mKw-Fu-VIK" id="q3Q-Df-a1u"/>
                         <outlet property="collectionView" destination="Aj0-cd-hX8" id="263-w8-TVE"/>
                         <outlet property="okBtn" destination="IJe-xQ-ESv" id="kUB-5w-HoC"/>
+                        <outlet property="progressView" destination="tRT-LF-bRV" id="VJ9-pv-qQ4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -358,6 +363,10 @@
                                     <action selector="checkBtnAction:" destination="7hl-YS-b0Z" eventType="touchUpInside" id="QVx-Hj-DgX"/>
                                 </connections>
                             </button>
+                            <progressView hidden="YES" opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="JYF-NG-IzO">
+                                <rect key="frame" x="0.0" y="61" width="375" height="2"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </progressView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -393,6 +402,7 @@
                         <outlet property="currentCollectionCountLabel" destination="CAT-AA-MsG" id="fI0-3Z-qAK"/>
                         <outlet property="currentIndexLabel" destination="wAu-Ib-s6x" id="akY-EB-53k"/>
                         <outlet property="okBtn" destination="aq9-hl-Nt9" id="n0P-Gj-UjT"/>
+                        <outlet property="progressView" destination="JYF-NG-IzO" id="xXQ-Uf-joi"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ifX-UV-9Mj" userLabel="First Responder" sceneMemberID="firstResponder"/>

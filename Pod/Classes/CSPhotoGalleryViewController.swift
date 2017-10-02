@@ -30,18 +30,19 @@ public class CSPhotoGalleryViewController: UIViewController {
     @IBOutlet fileprivate weak var collectionNameArrow: UILabel!
     @IBOutlet fileprivate weak var checkCount: UILabel! {
         didSet {
-            checkCount.isHidden = CSPhotoDesignManager.instance.isOKButtonHidden
+            checkCount.isHidden = CSPhotoDesignManager.instance.isCountLabelHidden
         }
     }
     
     @IBOutlet fileprivate weak var okBtn: UIButton! {
         didSet {
-            if let title = CSPhotoDesignManager.instance.photoGalleryOKButtonTitle {
-                okBtn.setTitle(title, for: .normal)
-            }
-            
-            okBtn.isHidden = CSPhotoDesignManager.instance.isOKButtonHidden
+            reloadOKButton()
         }
+    }
+    public func reloadOKButton(){
+        okBtn.setImage(CSPhotoDesignManager.instance.photoGalleryOKButtonImage, for: .normal)
+        okBtn.setTitle(CSPhotoDesignManager.instance.photoGalleryOKButtonTitle, for: .normal)
+        okBtn.isHidden = CSPhotoDesignManager.instance.isOKButtonHidden
     }
     
     @IBOutlet fileprivate weak var backBtn: UIButton! {
@@ -54,6 +55,7 @@ public class CSPhotoGalleryViewController: UIViewController {
     
     @IBOutlet fileprivate weak var collectionView: UICollectionView!
     
+    @IBOutlet weak var progressView: UIProgressView!
     public var delegate: CSPhotoGalleryDelegate?
     public var mediaType: CSPhotoImageType = .image
     public var CHECK_MAX_COUNT = 20
@@ -166,6 +168,12 @@ private extension CSPhotoGalleryViewController {
     }
     
     @IBAction func checkBtnAction(_ sender: Any) {
+        let designManager = CSPhotoDesignManager.instance
+        if let action = designManager.customOKButtonAction {
+            action()
+            return
+        }
+        
         delegate?.getAssets(assets: PhotoManager.sharedInstance.assets)
         dismiss()
     }
@@ -184,11 +192,16 @@ fileprivate extension CSPhotoGalleryViewController {
         PhotoManager.sharedInstance.initPhotoManager()
     }
     
-    func setThumbnailSize() {
+    func setThumbnailSize(_ newSize:CGSize?=nil) {
         let scale = UIScreen.main.scale
-        let cellSize = (collectionView.collectionViewLayout as! UICollectionViewFlowLayout).itemSize
-        let size = min(cellSize.width, cellSize.height) * scale
-        thumbnailSize = CGSize(width: size, height: size)
+        if newSize != nil {
+            thumbnailSize = CGSize(width: newSize!.width*scale, height: newSize!.height*scale)
+        }else{
+            let cellSize = (collectionView.collectionViewLayout as! UICollectionViewFlowLayout).itemSize
+            let size = min(cellSize.width, cellSize.height) * scale
+            thumbnailSize = CGSize(width: size, height: size)
+        }
+        
     }
     
     func setView() {
@@ -276,7 +289,7 @@ extension CSPhotoGalleryViewController: UICollectionViewDataSource {
         cell?.unCheckImage = unCheckImage
         cell?.setButtonImage()
         
-        cell?.checkBtn.isHidden = CSPhotoDesignManager.instance.isOKButtonHidden
+        cell?.checkBtn.isHidden = CSPhotoDesignManager.instance.isCountLabelHidden
         
         cell?.setPlaceHolderImage(image: nil)
         
@@ -297,7 +310,14 @@ extension CSPhotoGalleryViewController: UICollectionViewDelegate, UICollectionVi
         let asset = PhotoManager.sharedInstance.getCurrentCollectionAsset(at: indexPath)
         
         if asset.mediaType == .image {
-            PhotoManager.sharedInstance.assetToImage(asset: asset, imageSize: CGSize(width: asset.pixelWidth, height: asset.pixelHeight), isCliping: false) { image in
+            
+            let progress:PHAssetImageProgressHandler = {(progress, error, pointer, info) in
+                DispatchQueue.main.async {
+                self.progressView.isHidden = progress >= 1.0
+                    self.progressView.progress = Float(progress)
+                }
+            }
+            PhotoManager.sharedInstance.assetToImage(asset: asset, imageSize: CGSize(width: asset.pixelWidth, height: asset.pixelHeight), isCliping: false, contentMode: .aspectFill, progressHandler: progress) { image in
                 //  Present photo viewer
                 let item = collectionView.layoutAttributesForItem(at: indexPath)
                 let vc = CSPhotoGalleryDetailViewController.instance
@@ -342,6 +362,7 @@ extension CSPhotoGalleryViewController: UICollectionViewDelegate, UICollectionVi
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let size = (collectionView.bounds.width - horizontalCount - 1) / horizontalCount
+        setThumbnailSize(CGSize(width: size, height: size))
         return CGSize(width: size, height: size)
     }
 }

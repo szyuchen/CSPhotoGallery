@@ -7,10 +7,14 @@
 //
 
 import UIKit
+import Photos
 
 class CSPhotoGalleryDetailViewController: UIViewController {
-    var scrollViewState: UIGestureRecognizerState = .possible
+//    var scrollViewState: UIGestureRecognizerState = .possible
+    var dragging:Bool = false
     
+    
+    @IBOutlet weak var progressView: UIProgressView!
     static var instance: CSPhotoGalleryDetailViewController {
         let podBundle = Bundle(for: CSPhotoGalleryViewController.self)
         let bundleURL = podBundle.url(forResource: "CSPhotoGallery", withExtension: "bundle")
@@ -33,24 +37,22 @@ class CSPhotoGalleryDetailViewController: UIViewController {
     @IBOutlet fileprivate weak var checkCountLabel: UILabel? {
         didSet {
             updateCurrentSelectedCount()
-            checkCountLabel?.isHidden = CSPhotoDesignManager.instance.isOKButtonHidden
+            checkCountLabel?.isHidden = CSPhotoDesignManager.instance.isCountLabelHidden
         }
     }
     
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet fileprivate weak var checkBtn: UIButton! {
         didSet {
-            checkBtn.isHidden = CSPhotoDesignManager.instance.isOKButtonHidden
+            checkBtn.isHidden = CSPhotoDesignManager.instance.isCountLabelHidden
         }
     }
     
     @IBOutlet weak var okBtn: UIButton! {
         didSet {
-            if let title = CSPhotoDesignManager.instance.photoGalleryOKButtonTitle {
-                okBtn.setTitle(title, for: .normal)
-            }
-            
-            okBtn.isHidden = CSPhotoDesignManager.instance.isOKButtonHidden
+            okBtn.setImage(CSPhotoDesignManager.instance.photoGalleryOKButtonImage, for: .normal)
+            okBtn.setTitle(CSPhotoDesignManager.instance.photoGalleryOKButtonTitle, for: .normal)
+            okBtn.isHidden = CSPhotoDesignManager.instance.isCountLabelHidden
         }
     }
     
@@ -91,7 +93,10 @@ class CSPhotoGalleryDetailViewController: UIViewController {
     }
     
     override func viewDidLayoutSubviews(){
-        guard scrollViewState != .changed else{
+//        guard scrollViewState != .changed else{
+//            return
+//        }
+        guard dragging == false else{
             return
         }
         collectionView.scrollToItem(at: currentIndexPath, at: .left, animated: false)
@@ -211,6 +216,7 @@ fileprivate extension CSPhotoGalleryDetailViewController {
         
         let asset = PhotoManager.sharedInstance.getCurrentCollectionAsset(at: currentIndexPath)
         let size = CGSize(width: asset.pixelWidth, height: asset.pixelHeight)
+
         
         PhotoManager.sharedInstance.assetToImage(asset: asset, imageSize: size, isCliping: false) { image in
             self.currentImage = image
@@ -237,7 +243,13 @@ extension CSPhotoGalleryDetailViewController: UICollectionViewDataSource {
         cell.representedAssetIdentifier = asset.localIdentifier
         
         let size = CGSize(width: asset.pixelWidth, height: asset.pixelHeight)
-        PhotoManager.sharedInstance.setThumbnailImage(at: indexPath, thumbnailSize: size, isCliping: false) { image in
+        let progress:PHAssetImageProgressHandler = {(progress, error, pointer, info) in
+            DispatchQueue.main.async {
+                self.progressView.isHidden = progress >= 1.0
+                self.progressView.progress = Float(progress)
+            }
+        }
+        PhotoManager.sharedInstance.setThumbnailImage(at: indexPath, thumbnailSize: size, isCliping: false, progress:progress) { image in
             if cell.representedAssetIdentifier == asset.localIdentifier {
                 cell.imageView.image = image
             }
@@ -279,6 +291,15 @@ extension CSPhotoGalleryDetailViewController: UIScrollViewDelegate {
         guard scrollView == collectionView else {
             return
         }
-        scrollViewState = scrollView.panGestureRecognizer.state
+//        scrollViewState = scrollView.panGestureRecognizer.state
+    }
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        dragging = true
+    }
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        guard decelerate == false else {
+            return
+        }
+        dragging = false
     }
 }
