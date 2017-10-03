@@ -216,6 +216,11 @@ fileprivate extension CSPhotoGalleryDetailViewController {
 //  MARK:- Extension
 fileprivate extension CSPhotoGalleryDetailViewController {
     func dismiss(animated: Bool) {
+        if timer != nil && timer!.isValid {
+            timer!.invalidate()
+            timer = nil
+        }
+        
         var vc: CSPhotoGalleryViewController?
         
         if presentingViewController is CSPhotoGalleryViewController {
