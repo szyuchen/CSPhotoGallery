@@ -10,10 +10,7 @@ import UIKit
 import Photos
 
 class CSPhotoGalleryDetailViewController: UIViewController {
-//    var scrollViewState: UIGestureRecognizerState = .possible
     var dragging:Bool = false
-    
-    
     @IBOutlet weak var progressView: UIProgressView!
     static var instance: CSPhotoGalleryDetailViewController {
         let podBundle = Bundle(for: CSPhotoGalleryViewController.self)
@@ -42,17 +39,16 @@ class CSPhotoGalleryDetailViewController: UIViewController {
     }
     
     @IBOutlet weak var collectionView: UICollectionView!
-    @IBOutlet fileprivate weak var checkBtn: UIButton! {
-        didSet {
-            checkBtn.isHidden = CSPhotoDesignManager.instance.isCountLabelHidden
-        }
-    }
+//    @IBOutlet fileprivate weak var checkBtn: UIButton! {
+//        didSet {
+//            checkBtn.isHidden = CSPhotoDesignManager.instance.isCountLabelHidden
+//        }
+//    }
     
     @IBOutlet weak var okBtn: UIButton! {
         didSet {
-            okBtn.setImage(CSPhotoDesignManager.instance.photoGalleryOKButtonImage, for: .normal)
-            okBtn.setTitle(CSPhotoDesignManager.instance.photoGalleryOKButtonTitle, for: .normal)
-            okBtn.isHidden = CSPhotoDesignManager.instance.isCountLabelHidden
+//            okBtn.setImage(CSPhotoDesignManager.instance.photoGalleryOKButtonImage, for: .normal)
+            okBtn.setTitle(CSPhotoDesignManager.instance.slideShowTitle ?? "SlideShow", for: .normal)
         }
     }
     
@@ -70,7 +66,7 @@ class CSPhotoGalleryDetailViewController: UIViewController {
         didSet {
             if PhotoManager.sharedInstance.assetsCount > 0 {
                 updateCurrentIndexLabel()
-                updateCheckBtnUI()
+//                updateCheckBtnUI()
                 let asset = PhotoManager.sharedInstance.getCurrentCollectionAsset(at: currentIndexPath)
                 delegate?.CSPhotoGallerySelectedImageDidChange(asset:asset)
             }
@@ -93,37 +89,47 @@ class CSPhotoGalleryDetailViewController: UIViewController {
     }
     
     override func viewDidLayoutSubviews(){
-//        guard scrollViewState != .changed else{
-//            return
-//        }
         guard dragging == false else{
             return
         }
         collectionView.scrollToItem(at: currentIndexPath, at: .left, animated: false)
     }
-    
+    var timer:Timer? = nil
 }
 
 //  IBAction
-private extension CSPhotoGalleryDetailViewController {
+extension CSPhotoGalleryDetailViewController {
     @IBAction func backBtnAction(_ sender: Any) {
         dismiss(animated: true)
     }
     
-    @IBAction func checkBtnAction(_ sender: Any) {
-        let identifier = PhotoManager.sharedInstance.getLocalIdentifier(at: currentIndexPath)
-        PhotoManager.sharedInstance.setSelectedIndexPath(identifier: identifier)
-        updateCheckBtnUI()
-        updateCurrentSelectedCount()
-        
-        let vc = presentingViewController as? CSPhotoGalleryViewController
-        vc?.updateCollectionViewCellUI(indexPath: currentIndexPath)
-    }
+//    @IBAction func checkBtnAction(_ sender: Any) {
+//        let identifier = PhotoManager.sharedInstance.getLocalIdentifier(at: currentIndexPath)
+//        PhotoManager.sharedInstance.setSelectedIndexPath(identifier: identifier)
+//        updateCheckBtnUI()
+//        updateCurrentSelectedCount()
+//
+//        let vc = presentingViewController as? CSPhotoGalleryViewController
+//        vc?.updateCollectionViewCellUI(indexPath: currentIndexPath)
+//    }
+    
     
     @IBAction func okBtnAction(_ sender: Any) {
-        delegate?.getAssets(assets: PhotoManager.sharedInstance.assets)
-        dismiss(animated: false)
+
+        guard timer != nil && timer!.isValid else {
+            okBtn.setTitle(CSPhotoDesignManager.instance.slideShowStopTitle ?? "Stop SlideShow", for: .normal)
+            timer = Timer.scheduledTimer(timeInterval: 3.0, target: self, selector: #selector(self.fire(timer:)), userInfo: nil, repeats: true)
+            return
+        }
+        okBtn.setTitle(CSPhotoDesignManager.instance.slideShowTitle ?? "SlideShow", for: .normal)
+        timer!.invalidate()
+        timer = nil
     }
+    
+    @objc func fire(timer:Timer)->Swift.Void{
+        scrollToNextIndexPath(animated:true)
+    }
+    
 }
 
 //  MARK:- Init ViewController
@@ -170,22 +176,30 @@ fileprivate extension CSPhotoGalleryDetailViewController {
         }
     }
     
-    func updateCheckBtnUI() {
-        DispatchQueue.main.async {
-            let identifier = PhotoManager.sharedInstance.getLocalIdentifier(at: self.currentIndexPath)
-            if PhotoManager.sharedInstance.isSelectedIndexPath(identifier: identifier) {
-                self.checkBtn?.setImage(self.checkImage, for: .normal)
-            } else {
-                self.checkBtn?.setImage(self.unCheckImage, for: .normal)
-            }
-        }
-    }
+//    func updateCheckBtnUI() {
+//        DispatchQueue.main.async {
+//            let identifier = PhotoManager.sharedInstance.getLocalIdentifier(at: self.currentIndexPath)
+//            if PhotoManager.sharedInstance.isSelectedIndexPath(identifier: identifier) {
+//                self.checkBtn?.setImage(self.checkImage, for: .normal)
+//            } else {
+//                self.checkBtn?.setImage(self.unCheckImage, for: .normal)
+//            }
+//        }
+//    }
     
     func scrollToCurrentIndexPath() {
         DispatchQueue.main.async {
             self.collectionView.scrollToItem(at: self.currentIndexPath, at: .left, animated: false)
         }
-
+    }
+    func scrollToNextIndexPath(animated:Bool = false) {
+        DispatchQueue.main.async {
+            
+            let newIndex = IndexPath(row: self.currentIndexPath.row+1, section: self.currentIndexPath.section)
+            
+            self.collectionView.scrollToItem(at: self.currentIndexPath, at: .left, animated: animated)
+            self.currentIndexPath = newIndex
+        }
     }
     
     override internal func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -287,12 +301,7 @@ extension CSPhotoGalleryDetailViewController: UIScrollViewDelegate {
 //        let cell = collectionView.cellForItem(at: currentIndexPath) as? CSPhotoGalleryDetailCollectionViewCell
 //        return cell?.imageView
 //    }
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        guard scrollView == collectionView else {
-            return
-        }
-//        scrollViewState = scrollView.panGestureRecognizer.state
-    }
+
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         dragging = true
     }
