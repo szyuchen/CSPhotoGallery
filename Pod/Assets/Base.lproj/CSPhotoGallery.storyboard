@@ -334,34 +334,30 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aq9-hl-Nt9">
-                                <rect key="frame" x="325" y="20" width="45" height="45"/>
+                                <rect key="frame" x="298" y="20" width="72" height="45"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="5az-mK-EhA"/>
-                                    <constraint firstAttribute="width" constant="45" id="gdN-NB-tZj"/>
                                 </constraints>
-                                <state key="normal" title="확인">
+                                <state key="normal" title="SlideShow">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
                                     <action selector="okBtnAction:" destination="7hl-YS-b0Z" eventType="touchUpInside" id="hfR-OW-KMv"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fU5-fq-yNx">
-                                <rect key="frame" x="314" y="32" width="11" height="21"/>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fU5-fq-yNx">
+                                <rect key="frame" x="287" y="32" width="11" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Bv-EG-gku">
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Bv-EG-gku">
                                 <rect key="frame" x="320" y="612" width="45" height="45"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="L5L-Wf-HnI"/>
                                     <constraint firstAttribute="width" constant="45" id="bEc-oy-CmM"/>
                                 </constraints>
                                 <state key="normal" image="check_default"/>
-                                <connections>
-                                    <action selector="checkBtnAction:" destination="7hl-YS-b0Z" eventType="touchUpInside" id="QVx-Hj-DgX"/>
-                                </connections>
                             </button>
                             <progressView hidden="YES" opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="JYF-NG-IzO">
                                 <rect key="frame" x="0.0" y="61" width="375" height="2"/>
@@ -396,8 +392,6 @@
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
                     <connections>
                         <outlet property="backBtn" destination="PFw-iY-HLf" id="oTp-t9-MKu"/>
-                        <outlet property="checkBtn" destination="5Bv-EG-gku" id="HtT-aO-cod"/>
-                        <outlet property="checkCountLabel" destination="fU5-fq-yNx" id="Oyu-X0-wtD"/>
                         <outlet property="collectionView" destination="dYb-ql-EmG" id="gE8-63-jvk"/>
                         <outlet property="currentCollectionCountLabel" destination="CAT-AA-MsG" id="fI0-3Z-qAK"/>
                         <outlet property="currentIndexLabel" destination="wAu-Ib-s6x" id="akY-EB-53k"/>

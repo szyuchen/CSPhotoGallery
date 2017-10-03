@@ -22,7 +22,6 @@ public class CSPhotoDesignManager {
     
     //  OK Button Title
     public var photoGalleryOKButtonTitle: String?
-    
     public var photoGalleryOKButtonImage: UIImage?
     
     //  Check Image
@@ -35,7 +34,10 @@ public class CSPhotoDesignManager {
     public var isOKButtonHidden = false
     
     public var customOKButtonAction:(()->())?
-    
     public var isCountLabelHidden = false
+    
+    // Detail View Controller
+    public var slideShowTitle:String?
+    public var slideShowStopTitle:String?
     
 }

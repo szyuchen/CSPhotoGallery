@@ -11,6 +11,7 @@ import Photos
 
 typealias CSObservation = UInt8
 
+
 public class CSPhotoGalleryViewController: UIViewController {
     public static var instance: CSPhotoGalleryViewController {
         let podBundle = Bundle(for: CSPhotoGalleryViewController.self)
@@ -98,7 +99,10 @@ public class CSPhotoGalleryViewController: UIViewController {
         }
     }
     
+    public var deinitCustomAction: ((_ vc:CSPhotoGalleryViewController)->())?
+    
     deinit {
+        deinitCustomAction?(self)
         PhotoManager.sharedInstance.removeObserver(self, forKeyPath: "selectedItemCount")
         PhotoManager.sharedInstance.removeObserver(self, forKeyPath: "currentCollection")
         PhotoManager.sharedInstance.remover(object: self)
