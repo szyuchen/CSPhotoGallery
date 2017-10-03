@@ -145,7 +145,6 @@ fileprivate extension CSPhotoGalleryDetailViewController {
     }
     
     private func setView() {
-//        scrollToCurrentIndexPath()
         
         let podBundle = Bundle(for: CSPhotoGalleryDetailViewController.self)
         let bundleURL = podBundle.url(forResource: "CSPhotoGallery", withExtension: "bundle")
@@ -197,7 +196,7 @@ fileprivate extension CSPhotoGalleryDetailViewController {
             
             let newIndex = IndexPath(row: self.currentIndexPath.row+1, section: self.currentIndexPath.section)
             
-            self.collectionView.scrollToItem(at: self.currentIndexPath, at: .left, animated: animated)
+            self.collectionView.scrollToItem(at: newIndex, at: .left, animated: animated)
             self.currentIndexPath = newIndex
         }
     }
