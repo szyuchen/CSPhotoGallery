@@ -70,6 +70,7 @@ public class CSPhotoGalleryViewController: UIViewController {
     var checkImage: UIImage?
     var unCheckImage: UIImage?
     
+    
     override  public func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
             super.viewWillTransition(to: size, with: coordinator)
             guard let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else {
@@ -103,10 +104,9 @@ public class CSPhotoGalleryViewController: UIViewController {
     
     deinit {
         deinitCustomAction?(self)
-        PhotoManager.sharedInstance.removeObserver(self, forKeyPath: "selectedItemCount")
-        PhotoManager.sharedInstance.removeObserver(self, forKeyPath: "currentCollection")
-        PhotoManager.sharedInstance.remover(object: self)
+        removeObserver()
     }
+    fileprivate var observersAdded = false
 }
 
 //  MARK:- Gesture
@@ -209,7 +209,7 @@ fileprivate extension CSPhotoGalleryViewController {
     }
     
     func setView() {
-        addObserver()
+        
         setTitle()
         
         let podBundle = Bundle(for: CSPhotoGalleryViewController.self)
@@ -227,6 +227,16 @@ fileprivate extension CSPhotoGalleryViewController {
         PhotoManager.sharedInstance.register(object: self)
         PhotoManager.sharedInstance.addObserver(self, forKeyPath: "selectedItemCount", options: .new, context: &CSObservationContext)
         PhotoManager.sharedInstance.addObserver(self, forKeyPath: "currentCollection", options: .new, context: &CSCollectionObservationContext)
+        observersAdded = true
+    }
+    func removeObserver(){
+        guard observersAdded == true else {
+            return;
+        }
+        PhotoManager.sharedInstance.removeObserver(self, forKeyPath: "selectedItemCount")
+        PhotoManager.sharedInstance.removeObserver(self, forKeyPath: "currentCollection")
+        PhotoManager.sharedInstance.remover(object: self)
+        observersAdded = false
     }
     
     func setCheckCountLabel(count: Int) {
