@@ -10,5 +10,5 @@ import Photos
 
 public protocol CSPhotoGalleryDelegate {
     func getAssets(assets: [PHAsset])
-    func CSPhotoGallerySelectedImageDidChange(asset:PHAsset)
+    func CSPhotoGallerySelectedImageDidChange(asset:PHAsset, detailVC:UIViewController)
 }

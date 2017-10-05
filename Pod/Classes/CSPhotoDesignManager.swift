@@ -14,30 +14,31 @@ public class CSPhotoDesignManager {
     
     //  Photo collection view
     public var photoGalleryBackButtonImage: UIImage?
-    
-    public var customDismiss: (()->())?
-    
-    //  Photo detail view
-    public var photoDetailBackButtonImage: UIImage?
-    
+    public var photoGalleryDismissCustomAction: (()->())?
     //  OK Button Title
     public var photoGalleryOKButtonTitle: String?
     public var photoGalleryOKButtonImage: UIImage?
-    
     //  Check Image
     public var photoGalleryCheckImage: UIImage?
-    
     //  UnCheck Image
     public var photoGalleryUnCheckImage: UIImage?
-    
     //  When OK Button is hidden, CheckCountLabel and CheckBtn is hidden  
     public var isOKButtonHidden = false
-    
-    public var customOKButtonAction:(()->())?
+    public var photoGalleryOKButtonCustomAction:((CSPhotoGalleryViewController)->())?
     public var isCountLabelHidden = false
+    public var photoGalleryDeinit: ((CSPhotoGalleryViewController)->())?
     
     // Detail View Controller
-    public var slideShowTitle:String?
-    public var slideShowStopTitle:String?
+    //  Photo detail view
+    public var photoDetailBackButtonImage: UIImage?
+    public var slideShowButtonTitle:String?
+    public var slideShowButtonImage:UIImage?
+    public var slideShowStopButtonTitle:String?
+    public var slideShowStopButtonImage:UIImage?
+    public var photoDetailOKButtonTitle:String?
+    public var photoDetailOKButtonImage:UIImage?
+    public var photoDetailOKButtonCustomAction: ((CSPhotoGalleryDetailViewController)->())?
+    public var photoDetailViewDidLoadCustomAction: ((CSPhotoGalleryDetailViewController)->())?
+    public var photoDetailDeinit: ((CSPhotoGalleryDetailViewController)->())?
     
 }
