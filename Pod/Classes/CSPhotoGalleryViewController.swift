@@ -35,7 +35,7 @@ public class CSPhotoGalleryViewController: UIViewController {
         }
     }
     
-    @IBOutlet fileprivate weak var okBtn: UIButton! {
+    @IBOutlet public weak var okBtn: UIButton! {
         didSet {
             reloadOKButton()
         }
@@ -81,7 +81,7 @@ public class CSPhotoGalleryViewController: UIViewController {
     
     override public func viewDidLoad() {
         super.viewDidLoad()
-
+        definesPresentationContext = true
         // Do any additional setup after loading the view.
         setViewController()
         setThumbnailSize()
@@ -100,10 +100,8 @@ public class CSPhotoGalleryViewController: UIViewController {
         }
     }
     
-    public var deinitCustomAction: ((_ vc:CSPhotoGalleryViewController)->())?
-    
     deinit {
-        deinitCustomAction?(self)
+        CSPhotoDesignManager.instance.photoGalleryDeinit?(self)
         removeObserver()
     }
     fileprivate var observersAdded = false
@@ -164,7 +162,7 @@ extension CSPhotoGalleryViewController {
 //  MARK:- Actions
 private extension CSPhotoGalleryViewController {
     @IBAction func backBtnAction(_ sender: Any) {
-        if let custom = CSPhotoDesignManager.instance.customDismiss {
+        if let custom = CSPhotoDesignManager.instance.photoGalleryDismissCustomAction {
             custom()
             return
         }
@@ -173,8 +171,8 @@ private extension CSPhotoGalleryViewController {
     
     @IBAction func checkBtnAction(_ sender: Any) {
         let designManager = CSPhotoDesignManager.instance
-        if let action = designManager.customOKButtonAction {
-            action()
+        if let action = designManager.photoGalleryOKButtonCustomAction {
+            action(self)
             return
         }
         
