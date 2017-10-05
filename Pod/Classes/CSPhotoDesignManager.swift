@@ -37,7 +37,9 @@ public class CSPhotoDesignManager {
     public var isCountLabelHidden = false
     
     // Detail View Controller
-    public var slideShowTitle:String?
-    public var slideShowStopTitle:String?
+    public var slideShowButtonTitle:String?
+    public var slideShowButtonImage:UIImage?
+    public var slideShowStopButtonTitle:String?
+    public var slideShowStopButtonImage:UIImage?
     
 }

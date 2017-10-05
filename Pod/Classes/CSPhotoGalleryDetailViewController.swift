@@ -48,7 +48,8 @@ class CSPhotoGalleryDetailViewController: UIViewController {
     @IBOutlet weak var okBtn: UIButton! {
         didSet {
 //            okBtn.setImage(CSPhotoDesignManager.instance.photoGalleryOKButtonImage, for: .normal)
-            okBtn.setTitle(CSPhotoDesignManager.instance.slideShowTitle ?? "SlideShow", for: .normal)
+            okBtn.setTitle(CSPhotoDesignManager.instance.slideShowButtonTitle ?? "SlideShow", for: .normal)
+            okBtn.setImage(CSPhotoDesignManager.instance.slideShowButtonImage, for: .normal)
         }
     }
     
@@ -94,7 +95,20 @@ class CSPhotoGalleryDetailViewController: UIViewController {
         }
         collectionView.scrollToItem(at: currentIndexPath, at: .left, animated: false)
     }
+    @IBOutlet weak var segmentControl: UISegmentedControl!
     var timer:Timer? = nil
+    
+    
+    @IBAction func segmentValueChange(_ sender: Any) {
+        guard timer != nil && timer!.isValid else{
+            return
+        }
+        timer!.invalidate()
+        timer = nil
+        setSlideShowTimer()
+    }
+    
+    
 }
 
 //  IBAction
@@ -117,19 +131,29 @@ extension CSPhotoGalleryDetailViewController {
     @IBAction func okBtnAction(_ sender: Any) {
 
         guard timer != nil && timer!.isValid else {
-            okBtn.setTitle(CSPhotoDesignManager.instance.slideShowStopTitle ?? "Stop SlideShow", for: .normal)
-            timer = Timer.scheduledTimer(timeInterval: 3.0, target: self, selector: #selector(self.fire(timer:)), userInfo: nil, repeats: true)
+            okBtn.setTitle(CSPhotoDesignManager.instance.slideShowStopButtonTitle ?? "Stop SlideShow", for: .normal)
+            okBtn.setImage(CSPhotoDesignManager.instance.slideShowStopButtonImage , for: .normal)
+            setSlideShowTimer()
             return
         }
-        okBtn.setTitle(CSPhotoDesignManager.instance.slideShowTitle ?? "SlideShow", for: .normal)
+        okBtn.setTitle(CSPhotoDesignManager.instance.slideShowButtonTitle ?? "SlideShow", for: .normal)
+        okBtn.setImage(CSPhotoDesignManager.instance.slideShowButtonImage, for: .normal)
         timer!.invalidate()
         timer = nil
+    }
+    fileprivate func setSlideShowTimer(){
+        var interval = 3.0
+        if let title = segmentControl.titleForSegment(at: segmentControl.selectedSegmentIndex) {
+            interval = Double(title)!
+        }
+        print("slide show goes with interval:\(interval)")
+        timer = Timer.scheduledTimer(timeInterval: interval, target: self, selector: #selector(self.fire(timer:)), userInfo: nil, repeats: true)
     }
     
     @objc func fire(timer:Timer)->Swift.Void{
         scrollToNextIndexPath(animated:true)
     }
-    
+
 }
 
 //  MARK:- Init ViewController
@@ -193,9 +217,7 @@ fileprivate extension CSPhotoGalleryDetailViewController {
     }
     func scrollToNextIndexPath(animated:Bool = false) {
         DispatchQueue.main.async {
-            
             let newIndex = IndexPath(row: self.currentIndexPath.row+1, section: self.currentIndexPath.section)
-            
             self.collectionView.scrollToItem(at: newIndex, at: .left, animated: animated)
             self.currentIndexPath = newIndex
         }
