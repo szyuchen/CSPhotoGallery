@@ -85,7 +85,9 @@ public class CSPhotoGalleryViewController: UIViewController {
         // Do any additional setup after loading the view.
         setViewController()
         setThumbnailSize()
+        addObserver()
         checkPhotoLibraryPermission()
+        scrollToBottom()
     }
     
     override public func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
@@ -413,5 +415,12 @@ extension CSPhotoGalleryViewController: PHPhotoLibraryChangeObserver {
                 collectionView!.reloadData()
             }
         }
+    }
+}
+extension CSPhotoGalleryViewController{
+    func scrollToBottom(){
+        let item = self.collectionView(self.collectionView!, numberOfItemsInSection: 0) - 1
+        let lastItemIndex = IndexPath(item: item, section: 0)
+        collectionView?.scrollToItem(at: lastItemIndex, at: UICollectionViewScrollPosition.top, animated: false)
     }
 }

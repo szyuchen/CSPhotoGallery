@@ -216,7 +216,7 @@ extension PhotoManager {
     
     func getAssetsInPHAssetCollection(collection: PHAssetCollection) -> PHFetchResult<PHAsset> {
         let fetchOptions = PHFetchOptions()
-        fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
+//        fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
         fetchOptions.predicate = NSPredicate(format: "mediaType = %d", mediaType.type.rawValue)
         return PHAsset.fetchAssets(in: collection, options: fetchOptions)
     }
