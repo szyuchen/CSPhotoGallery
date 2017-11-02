@@ -92,7 +92,10 @@ extension PhotoManager {
     func initUserCollection() {
         userCollections = []
         PHCollectionList.fetchTopLevelUserCollections(with: nil).enumerateObjects({ collection, _, _ in
-            if self.getPHAssetCollectionCount(collection: collection as! PHAssetCollection) > 0 {
+            guard let c = collection as? PHAssetCollection else {
+                return
+            }
+            if self.getPHAssetCollectionCount(collection: c) > 0 {
                 self.userCollections.append(collection)
             }
         })
