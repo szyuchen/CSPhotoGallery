@@ -222,6 +222,11 @@ fileprivate extension CSPhotoGalleryDetailViewController {
     }
     func scrollToNextIndexPath(animated:Bool = false) {
         DispatchQueue.main.async {
+            if(self.currentIndexPath.row >=  PhotoManager.sharedInstance.assetsCount-1){
+                self.slideShowButtonAction(self)
+                return
+            }
+            
             let newIndex = IndexPath(row: self.currentIndexPath.row+1, section: self.currentIndexPath.section)
             self.collectionView.scrollToItem(at: newIndex, at: .left, animated: animated)
             self.currentIndexPath = newIndex
