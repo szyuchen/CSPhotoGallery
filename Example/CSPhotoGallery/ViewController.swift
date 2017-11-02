@@ -37,6 +37,10 @@ class ViewController: UIViewController {
 }
 
 extension ViewController: CSPhotoGalleryDelegate {
+    func CSPhotoGallerySelectedImageDidChange(asset: PHAsset, detailVC: UIViewController) {
+        
+    }
+    
     func CSPhotoGallerySelectedImageDidChange(asset: PHAsset) {
         
     }
