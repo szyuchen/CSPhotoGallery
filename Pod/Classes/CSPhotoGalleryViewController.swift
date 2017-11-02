@@ -97,6 +97,9 @@ public class CSPhotoGalleryViewController: UIViewController {
         } else if context == &CSCollectionObservationContext {
             setTitle()
             reloadCollectionView()
+            DispatchQueue.main.async {
+                self.scrollToBottom()
+            }
         } else {
             super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
         }
