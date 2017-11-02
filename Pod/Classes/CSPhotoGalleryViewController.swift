@@ -423,6 +423,9 @@ extension CSPhotoGalleryViewController: PHPhotoLibraryChangeObserver {
 extension CSPhotoGalleryViewController{
     func scrollToBottom(){
         let item = self.collectionView(self.collectionView!, numberOfItemsInSection: 0) - 1
+        guard item > 0 else{
+            return
+        }
         let lastItemIndex = IndexPath(item: item, section: 0)
         collectionView?.scrollToItem(at: lastItemIndex, at: UICollectionViewScrollPosition.top, animated: false)
     }
