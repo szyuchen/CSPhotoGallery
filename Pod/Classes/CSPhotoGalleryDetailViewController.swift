@@ -285,11 +285,17 @@ extension CSPhotoGalleryDetailViewController: UICollectionViewDataSource {
         
         cell.representedAssetIdentifier = asset.localIdentifier
         
-        let size = CGSize(width: asset.pixelWidth, height: asset.pixelHeight)
+        let size = UIScreen.main.nativeBounds.size
         let progress:PHAssetImageProgressHandler = {(progress, error, pointer, info) in
-            DispatchQueue.main.async {
-                self.progressView.isHidden = progress >= 1.0
-                self.progressView.progress = Float(progress)
+            DispatchQueue.main.async { [weak self] in
+                self?.progressView.isHidden = progress >= 1.0
+                self?.progressView.progress = Float(progress)
+                if progress < 1.0 { //
+                    self?.timer?.invalidate()
+                    self?.timer = nil
+                }else{
+                    self?.setSlideShowTimer()
+                }
             }
         }
         PhotoManager.sharedInstance.setThumbnailImage(at: indexPath, thumbnailSize: size, isCliping: false, progress:progress) { image in
