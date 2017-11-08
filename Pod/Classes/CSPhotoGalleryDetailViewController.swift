@@ -152,6 +152,8 @@ extension CSPhotoGalleryDetailViewController {
             interval = Double(title)!
         }
         print("slide show goes with interval:\(interval)")
+        timer?.invalidate()
+        timer = nil
         timer = Timer.scheduledTimer(timeInterval: interval, target: self, selector: #selector(self.fire(timer:)), userInfo: nil, repeats: true)
     }
     
@@ -221,11 +223,12 @@ fileprivate extension CSPhotoGalleryDetailViewController {
         }
     }
     func scrollToNextIndexPath(animated:Bool = false) {
+        if(self.currentIndexPath.row >=  PhotoManager.sharedInstance.assetsCount-1){
+            self.slideShowButtonAction(self)    //stop
+            return
+        }
         DispatchQueue.main.async {
-            if(self.currentIndexPath.row >=  PhotoManager.sharedInstance.assetsCount-1){
-                self.slideShowButtonAction(self)
-                return
-            }
+
             
             let newIndex = IndexPath(row: self.currentIndexPath.row+1, section: self.currentIndexPath.section)
             self.collectionView.scrollToItem(at: newIndex, at: .left, animated: animated)
@@ -240,10 +243,10 @@ fileprivate extension CSPhotoGalleryDetailViewController {
 //  MARK:- Extension
 fileprivate extension CSPhotoGalleryDetailViewController {
     func dismiss(animated: Bool) {
-        if timer != nil && timer!.isValid {
-            timer!.invalidate()
-            timer = nil
-        }
+        
+        timer?.invalidate()
+        timer = nil
+        
         
         var vc: CSPhotoGalleryViewController?
         
