@@ -16,11 +16,14 @@ class ViewController: UIViewController {
         
         //  Main
         designManager.photoGalleryOKButtonTitle = "OK"
+        designManager.slideShowButtonImage = UIImage(named:"slideshow-play")?.withRenderingMode(.alwaysOriginal)
+        designManager.slideShowStopButtonImage = UIImage(named:"slideshow-stop")?.withRenderingMode(.alwaysOriginal)
         
         let vc = CSPhotoGalleryViewController.instance
         vc.delegate = self
         vc.CHECK_MAX_COUNT = 10
         vc.horizontalCount = 4
+        
 //        present(vc, animated: true)
         navigationController?.pushViewController(vc, animated: true)
     }
