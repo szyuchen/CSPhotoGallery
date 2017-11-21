@@ -47,7 +47,7 @@ public class CSPhotoGalleryDetailViewController: UIViewController {
     
     @IBOutlet weak var slideshowButton: UIButton! {
         didSet {
-            slideshowButton.setTitle(CSPhotoDesignManager.instance.slideShowButtonTitle ?? "SlideShow", for: .normal)
+            slideshowButton.setTitle(CSPhotoDesignManager.instance.slideShowButtonTitle, for: .normal)
             slideshowButton.setImage(CSPhotoDesignManager.instance.slideShowButtonImage, for: .normal)
         }
     }
@@ -136,12 +136,12 @@ extension CSPhotoGalleryDetailViewController {
     @IBAction func slideShowButtonAction(_ sender: Any) {
 
         guard timer != nil && timer!.isValid else {
-            slideshowButton.setTitle(CSPhotoDesignManager.instance.slideShowStopButtonTitle ?? "Stop SlideShow", for: .normal)
+            slideshowButton.setTitle(CSPhotoDesignManager.instance.slideShowStopButtonTitle, for: .normal)
             slideshowButton.setImage(CSPhotoDesignManager.instance.slideShowStopButtonImage , for: .normal)
             setSlideShowTimer()
             return
         }
-        slideshowButton.setTitle(CSPhotoDesignManager.instance.slideShowButtonTitle ?? "SlideShow", for: .normal)
+        slideshowButton.setTitle(CSPhotoDesignManager.instance.slideShowButtonTitle, for: .normal)
         slideshowButton.setImage(CSPhotoDesignManager.instance.slideShowButtonImage, for: .normal)
         timer!.invalidate()
         timer = nil

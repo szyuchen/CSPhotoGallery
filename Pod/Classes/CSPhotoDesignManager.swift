@@ -31,9 +31,9 @@ public class CSPhotoDesignManager {
     // Detail View Controller
     //  Photo detail view
     public var photoDetailBackButtonImage: UIImage?
-    public var slideShowButtonTitle:String?
+    public var slideShowButtonTitle:String? = "Slideshow"
     public var slideShowButtonImage:UIImage?
-    public var slideShowStopButtonTitle:String?
+    public var slideShowStopButtonTitle:String? = "Stop Slideshow"
     public var slideShowStopButtonImage:UIImage?
     public var photoDetailOKButtonTitle:String?
     public var photoDetailOKButtonImage:UIImage?
