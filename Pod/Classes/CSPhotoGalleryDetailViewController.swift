@@ -295,8 +295,7 @@ extension CSPhotoGalleryDetailViewController: UICollectionViewDataSource {
                 self?.progressView.progress = Float(progress)
                 if progress < 1.0 { //
                     self?.timer?.invalidate()
-                    self?.timer = nil
-                }else{
+                } else if let timer = self?.timer, timer.isValid == false {
                     self?.setSlideShowTimer()
                 }
             }
