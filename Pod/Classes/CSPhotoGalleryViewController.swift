@@ -114,7 +114,7 @@ public class CSPhotoGalleryViewController: UIViewController {
 
 //  MARK:- Gesture
 extension CSPhotoGalleryViewController {
-    func collectionNameTap(_ sender: UITapGestureRecognizer) {
+    @objc func collectionNameTap(_ sender: UITapGestureRecognizer) {
         let a = CSPhotoGalleryAssetCollectionViewController.instance
         present(a, animated: true, completion: nil)
         collectionNameArrow.text =  "▼"
@@ -427,6 +427,6 @@ extension CSPhotoGalleryViewController{
             return
         }
         let lastItemIndex = IndexPath(item: item, section: 0)
-        collectionView?.scrollToItem(at: lastItemIndex, at: UICollectionViewScrollPosition.top, animated: false)
+        collectionView?.scrollToItem(at: lastItemIndex, at: UICollectionView.ScrollPosition.top, animated: false)
     }
 }
