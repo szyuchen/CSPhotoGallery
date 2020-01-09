@@ -43,8 +43,8 @@ public class PhotoManager: NSObject {
             selectedItemCount = selectedIdentifiers.count
         }
     }
-    dynamic private(set) var selectedItemCount: Int = 0
-    dynamic var currentCollection: PHAssetCollection? {
+    @objc dynamic private(set) var selectedItemCount: Int = 0
+    @objc dynamic var currentCollection: PHAssetCollection? {
         didSet {
             selectedIdentifiers = []
             if currentCollection != nil {

@@ -228,8 +228,8 @@ fileprivate extension CSPhotoGalleryViewController {
     
     func addObserver() {
         PhotoManager.sharedInstance.register(object: self)
-        PhotoManager.sharedInstance.addObserver(self, forKeyPath: "selectedItemCount", options: .new, context: &CSObservationContext)
-        PhotoManager.sharedInstance.addObserver(self, forKeyPath: "currentCollection", options: .new, context: &CSCollectionObservationContext)
+        PhotoManager.sharedInstance.addObserver(self, forKeyPath: #keyPath(PhotoManager.selectedItemCount), options: .new, context: &CSObservationContext)
+        PhotoManager.sharedInstance.addObserver(self, forKeyPath: #keyPath(PhotoManager.currentCollection), options: .new, context: &CSCollectionObservationContext)
         observersAdded = true
     }
     func removeObserver(){
