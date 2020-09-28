@@ -260,7 +260,7 @@ fileprivate extension CSPhotoGalleryViewController {
             switch status {
             case .authorized:
                 PhotoManager.sharedInstance.initPhotoManager()
-            case .denied, .restricted:
+            case .denied, .restricted, .limited:
                 break
             case .notDetermined:
                 self.checkPhotoLibraryPermission()
