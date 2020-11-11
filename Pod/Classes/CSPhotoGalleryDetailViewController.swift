@@ -95,7 +95,12 @@ public class CSPhotoGalleryDetailViewController: UIViewController {
         guard dragging == false else{
             return
         }
-        collectionView.scrollToItem(at: currentIndexPath, at: .left, animated: false)
+        // iOS14 scorllToItem broken
+        // collectionView.scrollToItem(at: currentIndexPath, at: .left, animated: false)
+        if let cPoint = self.collectionView.layoutAttributesForItem(at: currentIndexPath) {
+            let visiblePoint = CGPoint(x: cPoint.frame.minX, y: 0)
+            collectionView.contentOffset = visiblePoint
+        }
     }
     @IBOutlet weak var segmentControl: UISegmentedControl!
     var timer:Timer? = nil
