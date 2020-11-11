@@ -224,7 +224,11 @@ fileprivate extension CSPhotoGalleryDetailViewController {
     
     func scrollToCurrentIndexPath() {
         DispatchQueue.main.async {
-            self.collectionView.scrollToItem(at: self.currentIndexPath, at: .left, animated: false)
+            // self.collectionView.scrollToItem(at: self.currentIndexPath, at: .left, animated: false)
+            if let cPoint = self.collectionView.layoutAttributesForItem(at: self.currentIndexPath) {
+                let visiblePoint = CGPoint(x: cPoint.frame.minX, y: 0)
+                self.collectionView.contentOffset = visiblePoint
+            }
         }
     }
     func scrollToNextIndexPath(animated:Bool = false) {
@@ -236,7 +240,11 @@ fileprivate extension CSPhotoGalleryDetailViewController {
 
             
             let newIndex = IndexPath(row: self.currentIndexPath.row+1, section: self.currentIndexPath.section)
-            self.collectionView.scrollToItem(at: newIndex, at: .left, animated: animated)
+            //self.collectionView.scrollToItem(at: newIndex, at: .left, animated: animated)
+            if let cPoint = self.collectionView.layoutAttributesForItem(at: newIndex) {
+                let visiblePoint = CGPoint(x: cPoint.frame.minX, y: 0)
+                self.collectionView.contentOffset = visiblePoint
+            }
             self.currentIndexPath = newIndex
         }
     }
